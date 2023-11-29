@@ -6,8 +6,35 @@ body{
 button{
     margin:1rem;
 }
+.flex-container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
 .welcome-page{
     display:flex;
     flex-direction:column;
     align-items:center;
+}
+
+.game-page{
+    height:6em;
+    width:6em;
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+.tile{
+    height:50px;
+    width:50px;
+
+    font-family:'RubikOneRegular', sans-serif;
+}
+.game-page #row0{
+    grid-row: 1/2;
+}
+.game-page #row1{
+    grid-row:3/4;
+}
+.game-page #row2{
+    grid-row:5/6;
 }
