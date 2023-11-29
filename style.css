@@ -28,6 +28,9 @@ button{
 
 .tile{ 
     font-family:'RubikOneRegular', sans-serif;
+    text-align:center;
+    font-size:6rem;
+    color:aliceblue;
     border: solid papayawhip 3px;
 }
 .tile:hover{
