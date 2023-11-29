@@ -18,23 +18,18 @@ button{
 }
 
 .game-page{
-    height:6em;
-    width:6em;
+    margin-top:4rem;
+    height:25rem;
+    width:25rem;
     display:grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns:repeat(3, 1fr);
 }
-.tile{
-    height:50px;
-    width:50px;
 
+.tile{ 
     font-family:'RubikOneRegular', sans-serif;
+    border: solid papayawhip 3px;
 }
-.game-page #row0{
-    grid-row: 1/2;
-}
-.game-page #row1{
-    grid-row:3/4;
-}
-.game-page #row2{
-    grid-row:5/6;
-}
+.tile:hover{
+    background-color:rgb(149, 194, 170);
+} 
