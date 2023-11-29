@@ -1,0 +1,13 @@
+body{
+    font-family:'GeneraleStationRegular', 'Courier New', monospace;
+    background-color:darkseagreen;
+    color:aliceblue;
+}
+button{
+    margin:1rem;
+}
+.welcome-page{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
