@@ -7,9 +7,8 @@
 
     playBtn.addEventListener('click', (event)=>{
         const board = game.createBoard();
-        console.log(board);
-
-        return board;
+        const resetBtn = game.createResetBtn();
+        return board, resetBtn;
     });
 
     let gameboard = [];
@@ -42,7 +41,7 @@ const scoreBoard = (function (){
         const playerScore = document.createElement('div');
                 playerScore.classList.add('score');
             const playerHd = document.createElement('h1');
-                playerHd.innerHTML = 'Your Score';
+                playerHd.textContent = 'Your Score';
             const playerPoints = document.createElement('h2');
                 playerPoints.innerHTML = uS;
         board.appendChild(playerScore);
@@ -52,11 +51,11 @@ const scoreBoard = (function (){
         const compScore = document.createElement('div');
             compScore.classList.add('score');
             const compHd = document.createElement('h1');
-                compHd.innerHTML = 'Your Score';
+                compHd.textContent = 'Oponent Score';
             const compPoints = document.createElement('h2');
                 compPoints.innerHTML = cS;
-        board.appendChild(playerScore);
-        compScore.appendChild(playerHd);
+        board.appendChild(compScore);
+        compScore.appendChild(compHd);
         compScore.appendChild(compPoints);
     }
     const update = function (){
@@ -68,7 +67,6 @@ const scoreBoard = (function (){
 })();
 //TODO: create gameboard object with board as a local array
 const gameplay = (function (){
-
     let playerTurn = true;
 
     const playGame = function (tile) {
@@ -123,8 +121,8 @@ const gameplay = (function (){
         function checkForTie(){
             let tie = true; 
             for(let i=0; i<gameboard.length; i++){
-                if (gameboard[i]==null){
-                    tie=false;
+                if (gameboard[i]==''){
+                    tie = false;
                 }
             }
             if (tie==true){
@@ -143,9 +141,10 @@ const gameplay = (function (){
                 gameDisplay.appendChild(newRoundBtn);
                 newRoundBtn.addEventListener('click',()=>{
                     gameboard.splice('');
-                    console.log(gameboard);
-                    document.querySelector('.tile').forEach(tile  => {
-                        tile.innerHTML = ''
+                    document.querySelectorAll('.tile').forEach(tile  => {
+                        tile.innerHTML = '';
+                        roundOver = false;
+
                     });
                 });
 
@@ -155,6 +154,7 @@ const gameplay = (function (){
 })();
 
 const game = ( function () {
+
     const createBoard = function (){
         for (let i = 0 ; i < 9; i++){
             //creates each gameboard sqr
@@ -168,18 +168,25 @@ const game = ( function () {
         }
     //remove play button from screen
     view.removeChild(welcomeDisplay);
+    scoreBoard.createScoreBoard();
+
     };
     const createResetBtn = function (){
         const resetBtn = document.createElement('button');
             resetBtn.innerHTML = 'Reset Game';
             resetBtn.classList.add('reset');
+
             resetBtn.addEventListener('click', () =>{
                 user.resetScore();
                 computer.resetScore();
                 scoreBoard.update('0','0');
-                game.createBoard();
-    
+                gameboard = Array(9).fill(' ');
+
+                document.querySelectorAll('.tile').forEach(tile => {
+                        tile.innerHTML = '';
+                    });    
             });
+
         gameDisplay.appendChild(resetBtn);
     }
     return { createBoard, createResetBtn };
