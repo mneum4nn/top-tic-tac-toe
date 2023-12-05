@@ -1,18 +1,20 @@
 //GLOBAL VARIABLE DECLARATIONS
+let gameboard = [];
+
     //DOM variables
     const gameDisplay = document.querySelector('.game-page'); 
     const playBtn = document.getElementById('play-btn');
     const welcomeDisplay = document.querySelector('.welcome-page');
     const view = document.getElementById('view');
+    const controllers = document.querySelector('.btn-container');
 
     playBtn.addEventListener('click', (event)=>{
         const board = game.createBoard();
-        const resetBtn = game.createResetBtn();
-        return board, resetBtn;
+        return board;
     });
 
-    let gameboard = [];
 
+//FACTORY FUNCTION AREA
 function Player (symbol) {
     let score = 0; 
     this.symbol = symbol; 
@@ -28,8 +30,7 @@ function Player (symbol) {
 }
     let user = new Player('X');
     let computer = new Player('O');
-
-//FACTORY FUNCTION AREA
+//IIFE AREA
 //TODO: create scoreboard to keep score
 const scoreBoard = (function (){
 
@@ -66,8 +67,71 @@ const scoreBoard = (function (){
     return { createScoreBoard, update};
 })();
 //TODO: create gameboard object with board as a local array
+
+const game = ( function () {
+
+    const createBoard = function (){
+        for (let i = 0 ; i < 9; i++){
+            //creates each gameboard sqr
+            gameboard.push('');
+            const tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.setAttribute('id', gameboard.length-1);
+                tile.addEventListener('click', () => gameplay.playGame(tile));
+
+            gameDisplay.appendChild(tile);               
+        }
+    //remove play button from screen
+    view.removeChild(welcomeDisplay);
+    scoreBoard.createScoreBoard(0,0);
+
+    };
+    const clearBoard = function (){
+        gameboard = Array(9).fill('');
+        for (let i=0; i<9 ; i++){
+            const tile = document.getElementById(i);
+            tile.innerHTML = gameboard[i];
+        }
+    }
+
+   /* const createResetBtn = function (){
+        const resetBtn = document.createElement('button');
+            resetBtn.innerHTML = 'Reset Game';
+            resetBtn.classList.add('reset');
+
+            resetBtn.addEventListener('click', () =>{
+                roundOver = true; 
+                user.resetScore();
+                computer.resetScore();
+                scoreBoard.update('0','0');
+                gameboard = Array(9).fill(' ');
+
+                document.querySelectorAll('.tile').forEach(tile => {
+                        tile.innerHTML = '';
+                    });    
+
+            });
+        gameDisplay.appendChild(resetBtn);
+    }*/
+    return { createBoard, clearBoard /*createResetBtn*/ };
+}) ();
+
 const gameplay = (function (){
     let playerTurn = true;
+
+    const resetBtn = document.createElement('button');
+    resetBtn.innerHTML = 'Reset Game';
+    resetBtn.classList.add('reset');
+
+    resetBtn.addEventListener('click', () =>{
+        roundOver = true; 
+        game.clearBoard();
+        user.resetScore();
+        computer.resetScore();
+        scoreBoard.update('0','0');
+
+    });
+    controllers.appendChild(resetBtn);
 
     const playGame = function (tile) {
         let roundOver = false; 
@@ -79,7 +143,7 @@ const gameplay = (function (){
                 playerTurn = false;
                 } 
             else {
-                let oIndex; 
+                let oIndex = null; 
                 function getRandomNumber() {
                     return Math.floor(Math.random() * 9);
                 }
@@ -138,59 +202,15 @@ const gameplay = (function (){
                 newRoundBtn.classList.add('game-control');
                 newRoundBtn.setAttribute('id', 'new-round');
                 newRoundBtn.innerHTML='Next Round';
-                gameDisplay.appendChild(newRoundBtn);
+                controllers.appendChild(newRoundBtn);
+
                 newRoundBtn.addEventListener('click',()=>{
-                    gameboard.splice('');
-                    document.querySelectorAll('.tile').forEach(tile  => {
-                        tile.innerHTML = '';
+                        game.clearBoard();
                         roundOver = false;
-
                     });
-                });
-
             }    
         }
         return {playGame};
 })();
-
-const game = ( function () {
-
-    const createBoard = function (){
-        for (let i = 0 ; i < 9; i++){
-            //creates each gameboard sqr
-            gameboard.push('');
-            const tile = document.createElement('div');
-                tile.classList.add('tile');
-                tile.setAttribute('id', gameboard.length-1);
-                tile.addEventListener('click', () => gameplay.playGame(tile));
-
-            gameDisplay.appendChild(tile);               
-        }
-    //remove play button from screen
-    view.removeChild(welcomeDisplay);
-    scoreBoard.createScoreBoard();
-
-    };
-    const createResetBtn = function (){
-        const resetBtn = document.createElement('button');
-            resetBtn.innerHTML = 'Reset Game';
-            resetBtn.classList.add('reset');
-
-            resetBtn.addEventListener('click', () =>{
-                user.resetScore();
-                computer.resetScore();
-                scoreBoard.update('0','0');
-                gameboard = Array(9).fill(' ');
-
-                document.querySelectorAll('.tile').forEach(tile => {
-                        tile.innerHTML = '';
-                    });    
-            });
-
-        gameDisplay.appendChild(resetBtn);
-    }
-    return { createBoard, createResetBtn };
-}) ();
-
 
 

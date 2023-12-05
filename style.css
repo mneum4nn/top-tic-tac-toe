@@ -5,6 +5,14 @@ body{
 }
 button{
     margin:1rem;
+    height:4rem;
+    width:6rem;
+    font-weight:800;
+    background-color:ghostwhite;
+    color:rgb(149, 194, 170);
+    border-radius:30px;
+    border: none;
+
 }
 .flex-container{
     display:flex;
@@ -22,20 +30,32 @@ button{
     height:25rem;
     width:25rem;
     display:grid;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     grid-template-columns:repeat(3, 1fr);
 }
-.game-page > button {
+.btn-container {
+    margin-top:3rem;
     justify-self:center;
     align-self:center;
-    height:4rem;
-    width:6rem;
-    font-weight:800;
+
+}
+.score-board{
+    grid-row:4/5;
+    grid-column:1/-1;
+    background-color:rgb(85, 115, 85);
+
+    display:flex;
+    font-size:8px;
+    justify-content:space-around;
+    align-content:center;
+    margin-top:1rem;
+    text-align:center;
 }
 
 .tile{ 
     font-family:'RubikOneRegular', sans-serif;
     text-align:center;
+    height:7rem;
     font-size:6rem;
     color:aliceblue;
     border: solid papayawhip 3px;
