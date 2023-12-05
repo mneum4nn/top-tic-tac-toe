@@ -14,19 +14,70 @@
 
     let gameboard = [];
 
+function Player (symbol) {
+    let score = 0; 
+    this.symbol = symbol; 
+    this.upScore = function (){
+        score++;
+    }
+    this.getScore = function (){
+        return score;
+    }
+    this.resetScore = function (){
+        score = 0; 
+    }
+}
+    let user = new Player('X');
+    let computer = new Player('O');
+
 //FACTORY FUNCTION AREA
+//TODO: create scoreboard to keep score
+const scoreBoard = (function (){
+
+    const createScoreBoard = function (uS, cS){
+        const board = document.createElement('div');
+            board.classList.add('score-board');
+        gameDisplay.appendChild(board);
+
+        const playerScore = document.createElement('div');
+                playerScore.classList.add('score');
+            const playerHd = document.createElement('h1');
+                playerHd.innerHTML = 'Your Score';
+            const playerPoints = document.createElement('h2');
+                playerPoints.innerHTML = uS;
+        board.appendChild(playerScore);
+        playerScore.appendChild(playerHd);
+        playerScore.appendChild(playerPoints);
+
+        const compScore = document.createElement('div');
+            compScore.classList.add('score');
+            const compHd = document.createElement('h1');
+                compHd.innerHTML = 'Your Score';
+            const compPoints = document.createElement('h2');
+                compPoints.innerHTML = cS;
+        board.appendChild(playerScore);
+        compScore.appendChild(playerHd);
+        compScore.appendChild(compPoints);
+    }
+    const update = function (){
+        const v1 = user.getScore();
+        const v2 = computer.getScore();
+        createScoreBoard(v1,v2);
+    }
+    return { createScoreBoard, update};
+})();
 //TODO: create gameboard object with board as a local array
 const gameplay = (function (){
-    let playerScore = 0; 
-    let computerScore = 0;
+
     let playerTurn = true;
+
     const playGame = function (tile) {
         let roundOver = false; 
             //create event listener on click for each tile alters gameboard array and gameboard display
             if (playerTurn == true) {
                 const xIndex = tile.id; 
-                gameboard[xIndex] = 'X';
-                tile.innerHTML = gameboard[xIndex];
+                gameboard[xIndex] = user.symbol;
+                tile.innerHTML = user.symbol;
                 playerTurn = false;
                 } 
             else {
@@ -39,8 +90,8 @@ const gameplay = (function (){
                 if (gameboard[rN] == ''){
                     oIndex = rN;
                     const chosenTile = document.getElementById(oIndex);
-                    gameboard[oIndex] = 'O'
-                    chosenTile.innerHTML = gameboard[oIndex];
+                    gameboard[oIndex] = computer.symbol;
+                    chosenTile.innerHTML = computer.symbol;
                     }                            
                 }
                 playerTurn = true;
@@ -59,10 +110,10 @@ const gameplay = (function (){
                 if (gameboard[a] === symbol && gameboard[b] === symbol && gameboard[c] === symbol) {
                     roundOver = true;; // Found a winning combination
                     if (symbol=='X'){
-                            playerScore++;
+                            user.upScore();
                     }
                     else if (symbol=='O'){
-                            computerScore++;
+                            computer.upScore();
                     }
                 } 
             }
@@ -74,6 +125,7 @@ const gameplay = (function (){
             const newRoundBtn = document.createElement('button');
                 newRoundBtn.classList.add('game-control');
                 newRoundBtn.setAttribute('id', 'new-round');
+                newRoundBtn.innerHTML='Next Round';
                 gameDisplay.appendChild(newRoundBtn);
                 newRoundBtn.addEventListener('click',()=>{
                     gameboard.splice('');
@@ -103,7 +155,19 @@ const game = ( function () {
     //remove play button from screen
     view.removeChild(welcomeDisplay);
     };
-    return { createBoard };
+    const createResetBtn = function (){
+        const resetBtn = document.createElement('button');
+            resetBtn.innerHTML = 'Reset Game';
+            resetBtn.classList.add('reset');
+            resetBtn.addEventListener('click', () =>{
+                user.resetScore();
+                computer.resetScore();
+                scoreBoard.update('0','0');
+    
+            });
+        gameDisplay.appendChild(resetBtn);
+    }
+    return { createBoard, createResetBtn };
 }) ();
 
 

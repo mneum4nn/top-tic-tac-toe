@@ -25,6 +25,13 @@ button{
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns:repeat(3, 1fr);
 }
+.game-page > button {
+    justify-self:center;
+    align-self:center;
+    height:4rem;
+    width:6rem;
+    font-weight:800;
+}
 
 .tile{ 
     font-family:'RubikOneRegular', sans-serif;
