@@ -62,7 +62,7 @@ const scoreBoard = (function (){
     const update = function (){
         const v1 = user.getScore();
         const v2 = computer.getScore();
-        createScoreBoard(v1,v2);
+            createScoreBoard(v1,v2);      
     }
     return { createScoreBoard, update};
 })();
@@ -86,13 +86,13 @@ const gameplay = (function (){
                     return Math.floor(Math.random() * 9);
                 }
                 while (oIndex == null){
-                let rN = getRandomNumber();
-                if (gameboard[rN] == ''){
-                    oIndex = rN;
-                    const chosenTile = document.getElementById(oIndex);
-                    gameboard[oIndex] = computer.symbol;
-                    chosenTile.innerHTML = computer.symbol;
-                    }                            
+                    let rN = getRandomNumber();
+                    if (gameboard[rN] == ''){
+                        oIndex = rN;
+                        const chosenTile = document.getElementById(oIndex);
+                        gameboard[oIndex] = computer.symbol;
+                        chosenTile.innerHTML = computer.symbol;
+                        }                            
                 }
                 playerTurn = true;
             }
@@ -115,11 +115,25 @@ const gameplay = (function (){
                     else if (symbol=='O'){
                             computer.upScore();
                     }
+                    scoreBoard.update();
                 } 
             }
         }
+        //TODO: check for tie 
+        function checkForTie(){
+            let tie = true; 
+            for(let i=0; i<gameboard.length; i++){
+                if (gameboard[i]==null){
+                    tie=false;
+                }
+            }
+            if (tie==true){
+                roundOver=true;
+            };
+        }
         checkForWin('X');
         checkForWin('O');
+        checkForTie();
         if (roundOver == true) {        
         //once round is over, a button should appear and if clicked we clear the gameboard for a new round
             const newRoundBtn = document.createElement('button');
@@ -163,6 +177,7 @@ const game = ( function () {
                 user.resetScore();
                 computer.resetScore();
                 scoreBoard.update('0','0');
+                game.createBoard();
     
             });
         gameDisplay.appendChild(resetBtn);
